@@ -34,6 +34,13 @@ class OutpostTask extends Task
 
     public function onRun(): void
     {
+        $world = $this->getCurrentWorld();
+        
+        // Cancel the task if the world is null
+        if ($world === null) {
+            return;
+        }
+        
         $factions = $this->getFactionInArea();
         $factionCount = count($factions);
         if (!(empty($factions)) and ($factionCount === 1)) {
