@@ -2,16 +2,16 @@
 
 # Specify where the outpost will be set at
 area:
-  - [100, 90, 90]
+  - [100, 90, 90] # Use a coordinates plugin for better results!
   - [90, 100, 100]
 
 # Specify in which world this will occur
 world: world
 
-# Specify the time
+# Specify the time that will be required for the area to be captured
 time: 100
 
-# Specify how long it takes before that factions claims
+# Specify how long it takes before that factions claims after the first intial time runs out
 timeWin: 10
 
 # Rewards section
