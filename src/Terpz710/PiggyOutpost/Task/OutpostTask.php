@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Terpz710\PiggyOutpost\Task;
 
-
 use pocketmine\Server;
 use pocketmine\console\ConsoleCommandSender;
 use pocketmine\player\Player;
@@ -48,6 +47,7 @@ class OutpostTask extends Task
                     $this->timeWin = $this->config->get("timeWin");
                     $this->giveReward($money, $power);
                     $this->sendPopupInArea("You received {$money} dollars and $power power!");
+                    $this->time = $this->config->get("time");
                 }
             } else {
                 if ($this->time !== 0) {
@@ -92,7 +92,6 @@ class OutpostTask extends Task
                 }
             } else $player->sendPopup($message);
         }, $this->getPlayersInArea());
-
     }
 
     /** @return Faction[] */
