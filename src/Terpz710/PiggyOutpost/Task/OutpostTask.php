@@ -44,9 +44,9 @@ class OutpostTask extends Task
                     $this->getTime($minutes, $seconds, true);
                     $this->sendPopupInArea("You still have $minutes minutes and $seconds seconds before your next reward!");
                 } else {
-                    $this->timeWin = $this->config->get("timeWin");
                     $this->giveReward($money, $power);
                     $this->sendPopupInArea("You received {$money} dollars and $power power!");
+                    $this->timeWin = $this->config->get("timeWin");
                     $this->time = $this->config->get("time");
                 }
             } else {
@@ -90,7 +90,9 @@ class OutpostTask extends Task
                 if ($this->getPlayerFaction($player) === $this->faction) {
                     $player->sendPopup($message);
                 }
-            } else $player->sendPopup($message);
+            } else {
+                $player->sendPopup($message);
+            }
         }, $this->getPlayersInArea());
     }
 
