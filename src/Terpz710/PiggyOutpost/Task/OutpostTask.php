@@ -85,7 +85,8 @@ class OutpostTask extends Task
 
     private function sendPopupInArea(string $message, $verification = true): void
     {
-        array_map(function($player) use($message, $verification) {
+        $players = $this->getPlayersInArea();
+        foreach ($players as $player) {
             if ($verification) {
                 if ($this->getPlayerFaction($player) === $this->faction) {
                     $player->sendPopup($message);
@@ -93,7 +94,7 @@ class OutpostTask extends Task
             } else {
                 $player->sendPopup($message);
             }
-        }, $this->getPlayersInArea());
+        }
     }
 
     /** @return Faction[] */
@@ -129,7 +130,13 @@ class OutpostTask extends Task
     /** @return Player[] * */
     private function getPlayersInArea(): array
     {
-        return array_filter($this->getCurrentWorld()->getPlayers(), [$this, 'isInArea']);
+        $world = $this->getCurrentWorld();
+        
+        if ($world === null) {
+            return [];
+        }
+
+        return array_filter($world->getPlayers(), [$this, 'isInArea']);
     }
 
     private function getCurrentWorld(): ?World
@@ -138,7 +145,7 @@ class OutpostTask extends Task
         $world = Server::getInstance()->getWorldManager()->getWorldByName($worldName);
     
         if ($world === null) {
-            Server::getInstance()->getLogger()->warning("The world {$worldName} was not found! Make sure it exist/defined correctly within the config.yml!");
+            Server::getInstance()->getLogger()->warning("The world {$worldName} was not found! Make sure it exists/defined correctly within the config.yml!");
         }
     
         return $world;
