@@ -132,8 +132,15 @@ class OutpostTask extends Task
         return array_filter($this->getCurrentWorld()->getPlayers(), [$this, 'isInArea']);
     }
 
-    private function getCurrentWorld(): World
+    private function getCurrentWorld(): ?World
     {
-        return Server::getInstance()->getWorldManager()->getWorldByName($this->config->get("world"));
+        $worldName = $this->config->get("world");
+        $world = Server::getInstance()->getWorldManager()->getWorldByName($worldName);
+    
+        if ($world === null) {
+            Server::getInstance()->getLogger()->warning("The world {$worldName} was not found! Make sure it exist/defined correctly within the config.yml!");
+        }
+    
+        return $world;
     }
 }
