@@ -1,0 +1,19 @@
+# Created by Terpz710 :p
+
+# Specify where the outpost will be set at
+area:
+  - [100, 90, 90]
+  - [90, 100, 100]
+
+# Specify in which world this will occur
+world: world
+
+# Specify the time
+time: 100
+
+# Specify how long it takes before that factions claims
+timeWin: 10
+
+# Rewards section
+money: 500
+power: 100
