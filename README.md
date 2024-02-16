@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://github.com/Terpz710/PiggyOutpost/blob/main/icon.png"><img src="https://github.com/Terpz710/PiggyOutpost/blob/main/icon.png"></img></a><br>
-    <b>A Pocketmine-MP plugin</b>
+    <b>PiggyOutpost</b>
 
 # Description
 
