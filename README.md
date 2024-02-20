@@ -16,10 +16,11 @@ In order to claim the outpost your faction must be inside the specifed coordinat
 
 # How to set up
 
-* First drop the PiggyOutpost.phar into tge plugin folder
-* Load the server so all the configurations gets loaded.
+* First drop the PiggyOutpost.phar into the plugin folder
+* Load the server so all the configurations gets loaded
 * Stop the server, go into a folder called ("plugin_data") search for a folder called ("PiggyOutpost")
-* Edit the config.yml to your liking. Coords, World ect.
+* Edit the config.yml to your prefrence, Coords, World ect
+* Reload the server and battle on!
 
 **config.yml**
 
