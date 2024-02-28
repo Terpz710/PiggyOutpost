@@ -29,7 +29,7 @@ class OutpostTask extends Task
         $this->config = Outpost::getInstance()->getConfig();
         $this->timeWin = $this->config->get("timeWin");
         $this->time = $this->config->get("time");
-        $this->factionMoney =  Faction::addMoney();
+        $this->faction =  null;
     }
 
     public function onRun(): void
@@ -83,7 +83,7 @@ class OutpostTask extends Task
     {
         $money = $this->config->get("money");
         $power = $this->config->get("power");
-        $this->factionMoney($money);
+        $this->faction->addMoney($money);
         Server::getInstance()->getCommandMap()->dispatch(
             new ConsoleCommandSender(Server::getInstance(), Server::getInstance()->getLanguage()),
             "f powerboost faction {$this->faction->getName()} $power"
