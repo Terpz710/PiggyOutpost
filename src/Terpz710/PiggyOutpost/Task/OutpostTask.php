@@ -83,7 +83,7 @@ class OutpostTask extends Task
     {
         $money = $this->config->get("money");
         $power = $this->config->get("power");
-        $this->faction->addMoney($money);
+        $this->piggyFactions->addMoney($money);
         Server::getInstance()->getCommandMap()->dispatch(
             new ConsoleCommandSender(Server::getInstance(), Server::getInstance()->getLanguage()),
             "f powerboost faction {$this->faction->getName()} $power"
