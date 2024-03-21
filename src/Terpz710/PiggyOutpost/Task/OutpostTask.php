@@ -29,18 +29,17 @@ class OutpostTask extends Task
         $this->config = Outpost::getInstance()->getConfig();
         $this->timeWin = $this->config->get("timeWin");
         $this->time = $this->config->get("time");
-        $this->faction =  null;
+        $this->faction = null;
     }
 
     public function onRun(): void
     {
         $world = $this->getCurrentWorld();
-        
-        // Cancel the task if the world is null
+
         if ($world === null) {
             return;
         }
-        
+
         $factions = $this->getFactionInArea();
         $factionCount = count($factions);
         if (!(empty($factions)) and ($factionCount === 1)) {
@@ -127,6 +126,20 @@ class OutpostTask extends Task
         $pos1 = $this->config->get("area")[0];
         $pos2 = $this->config->get("area")[1];
 
+        $world = $this->getCurrentWorld();
+
+        if ($world === null) {
+            return false;
+        }
+
+        $chunkX1 = $pos1[0] >> 4;
+        $chunkZ1 = $pos1[2] >> 4;
+        $chunkX2 = $pos2[0] >> 4;
+        $chunkZ2 = $pos2[2] >> 4;
+
+        $world->loadChunk($chunkX1, $chunkZ1);
+        $world->loadChunk($chunkX2, $chunkZ2);
+
         $x_in_range = $player->getPosition()->x >= min($pos1[0], $pos2[0]) && $player->getPosition()->x <= max($pos1[0], $pos2[0]);
         $y_in_range = $player->getPosition()->y >= min($pos1[1], $pos2[1]) && $player->getPosition()->y <= max($pos1[1], $pos2[1]);
         $z_in_range = $player->getPosition()->z >= min($pos1[2], $pos2[2]) && $player->getPosition()->z <= max($pos1[2], $pos2[2]);
@@ -150,11 +163,11 @@ class OutpostTask extends Task
     {
         $worldName = $this->config->get("world");
         $world = Server::getInstance()->getWorldManager()->getWorldByName($worldName);
-    
+
         if ($world === null) {
             Server::getInstance()->getLogger()->warning("The world {$worldName} was not found! Make sure it exists/defined correctly within the config.yml!");
         }
-    
+
         return $world;
     }
 }
