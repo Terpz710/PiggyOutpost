@@ -5,26 +5,34 @@ declare(strict_types=1);
 namespace Terpz710\PiggyOutpost\Task;
 
 use pocketmine\Server;
+
 use pocketmine\console\ConsoleCommandSender;
+
 use pocketmine\player\Player;
+
 use pocketmine\scheduler\Task;
+
 use pocketmine\utils\Config;
+
 use pocketmine\world\World;
+
+use Terpz710\PiggyOutpost\Outpost;
 
 use DaPigGuy\PiggyFactions\factions\Faction;
 use DaPigGuy\PiggyFactions\PiggyFactions;
-use Terpz710\PiggyOutpost\Outpost;
 
-class OutpostTask extends Task
-{
+class OutpostTask extends Task {
+    
     private PiggyFactions $piggyFactions;
+    
     private ?Faction $faction;
+    
     private Config $config;
+    
     private int $timeWin;
     private int $time;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->piggyFactions = PiggyFactions::getInstance();
         $this->config = Outpost::getInstance()->getConfig();
         $this->timeWin = $this->config->get("timeWin");
@@ -32,8 +40,7 @@ class OutpostTask extends Task
         $this->faction = null;
     }
 
-    public function onRun(): void
-    {
+    public function onRun() : void{
         $world = $this->getCurrentWorld();
 
         if ($world === null) {
@@ -42,6 +49,7 @@ class OutpostTask extends Task
 
         $factions = $this->getFactionInArea();
         $factionCount = count($factions);
+        
         if (!(empty($factions)) and ($factionCount === 1)) {
             $factionName = is_null($this->faction) ? "" : $this->faction->getName();
             if (reset($factions)->getName() === $factionName) {
@@ -72,14 +80,12 @@ class OutpostTask extends Task
         }
     }
 
-    private function getTime(&$min, &$sec, bool $win = false): void
-    {
+    private function getTime(&$min, &$sec, bool $win = false) : void{
         $time = $win ? $this->timeWin : $this->time;
         [$min, $sec] = [floor($time / 60), $time % 60];
     }
 
-    public function giveReward(&$money, &$power): void
-    {
+    public function giveReward(&$money, &$power) : void{
         $money = $this->config->get("money");
         $power = $this->config->get("power");
         $this->faction->addMoney($money);
@@ -89,8 +95,7 @@ class OutpostTask extends Task
         );
     }
 
-    private function sendPopupInArea(string $message, $verification = true): void
-    {
+    private function sendPopupInArea(string $message, $verification = true) : void{
         $players = $this->getPlayersInArea();
         foreach ($players as $player) {
             if ($verification) {
@@ -103,26 +108,25 @@ class OutpostTask extends Task
         }
     }
 
-    /** @return Faction[] */
-    private function getFactionInArea(): array
-    {
+    private function getFactionInArea() : array{
         $players = $this->getPlayersInArea();
+        
         foreach ($players as $player) {
             if (is_null($this->getPlayerFaction($player))) {
                 unset($players[array_search($player, $players)]);
             }
         }
+        
         return array_unique(array_map([$this, 'getPlayerFaction'], $players));
     }
 
-    private function getPlayerFaction(Player $player): ?Faction
-    {
+    private function getPlayerFaction(Player $player) : ?Faction{
         $currentPlayer = $this->piggyFactions->getPlayerManager()->getPlayer($player);
+        
         return $currentPlayer ? $currentPlayer->getFaction() : null;
     }
 
-    private function isInArea(Player $player): bool
-    {
+    private function isInArea(Player $player) : bool{
         $pos1 = $this->config->get("area")[0];
         $pos2 = $this->config->get("area")[1];
 
@@ -147,9 +151,7 @@ class OutpostTask extends Task
         return $x_in_range && $y_in_range && $z_in_range;
     }
 
-    /** @return Player[] * */
-    private function getPlayersInArea(): array
-    {
+    private function getPlayersInArea() : array{
         $world = $this->getCurrentWorld();
         
         if ($world === null) {
@@ -159,8 +161,7 @@ class OutpostTask extends Task
         return array_filter($world->getPlayers(), [$this, 'isInArea']);
     }
 
-    private function getCurrentWorld(): ?World
-    {
+    private function getCurrentWorld() : ?World{
         $worldName = $this->config->get("world");
         $world = Server::getInstance()->getWorldManager()->getWorldByName($worldName);
 
@@ -171,3 +172,4 @@ class OutpostTask extends Task
         return $world;
     }
 }
+
